@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const promBundle = require("express-prom-bundle");
 const config = require('./system-life');
 const middlewares = require('./middleware')
+const path = require('path');
 
 const metricsMiddleware = promBundle({
     includeMethod: true, 
@@ -21,10 +22,11 @@ app.use(middlewares.countRequests)
 app.use(metricsMiddleware)
 app.use(config.middlewares.healthMid);
 app.use('/', config.routers);
-app.use(express.static('static'));
+app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 
 app.get('/post', (req, res) => {
