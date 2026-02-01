@@ -5,6 +5,17 @@
 docker build -t nome-imagem -f nome-dockerfile-usar .
 ```
 
+## Logar no Container Registry
+docker login or docker login -u user_registry
+
+## Enviar imagem para registry
+docker push user_registry/name_image:version
+
+## Adicionar uma tag
+É uma boa prática colocar tag da latest
+
+docker tag  pauloaragaodev/kube-news:v1 pauloaragaodev/kube-news:latest
+
 ## Listar container rodando
 docker ps 
 
@@ -28,6 +39,8 @@ Melhora a perfomace mapeando o arquivos porém não salva os dados.
 
 # Network
 Quando voce cria um container com "docker run" ele já cria uma rede em bridge de forma automática em conjunto com a bridge principal. E com isso elas conseguem se comunicar entre os dois container. 
+
+Existe tres tipos de redes padrão do container, sendo eles bridge, host e none. 
 
 ## Listar Networks
 docker network ls
