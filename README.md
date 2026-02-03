@@ -22,7 +22,8 @@ docker ps
 ## Remover todos os container de uma vez
 docker container rm -f $(docker container ls -qa)
 
-
+## Limpa tudo de docker no sistema 
+docker system prune
 
 # Volumes
 
@@ -67,3 +68,33 @@ docker network rm -f id_network
 
 ## Remover em massa network que não são utilizados
 docker network prune
+
+
+
+
+# Docker compose
+
+## Up
+
+docker compose -f compose.yaml up -d
+
+docker compose up -d
+
+
+Para remover antigos que estejam no compose
+docker compose up -d --remove-orphans
+
+
+## down
+docker compose down
+
+## Stop
+docker compose stop
+
+## Start
+docker compose start
+
+
+## Build
+
+docker compose build 

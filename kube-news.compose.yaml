@@ -1,0 +1,16 @@
+services:
+  kubenews:
+      build:
+        context: ./projeto-exercicio/src
+        dockerfile: Dockerfile
+      image: pauloaragaodev/kubenews:${KUBE_NEWS_TAG}
+      container_name: kubenews
+      ports:
+        - "8080:80"
+      networks:
+        - kube_news_net
+      environment:
+        - DB_PASSWORD=${POSTGRES_PASSWORD}
+        - DB_USER=${POSTGRES_USER}
+        - DB_NAME=${POSTGRES_DB}
+        - DB_HOST=postgres

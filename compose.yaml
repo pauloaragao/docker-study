@@ -1,0 +1,31 @@
+services:  
+  web:
+    extends:
+      file: kube-news.compose.yaml
+      service: kubenews
+
+  postgres:
+    image: postgres:${POSTGRES_TAG:-latest}
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      DB_HOST: postgres
+    volumes:
+      - kube_news_vol:/var/lib/postgresql/data
+    networks:
+      - kube_news_net
+
+volumes:
+  kube_news_vol:
+    name: kube_news_vol
+    external: true
+
+networks:
+  kube_news_net:
+    driver: bridge
+    name: kube_news_net
+    external: true
+  
