@@ -474,6 +474,102 @@ docker logs --since 2026-02-01 nome-container
 
 ---
 
+## 💚 Healthchecks
+
+Um healthcheck verifica periodicamente se o container está funcionando corretamente, permitindo que orquestradores (Docker Compose, Kubernetes) tomem ações automáticas em caso de falha.
+
+### Healthcheck na linha de comando
+Executa um teste direto ao criar o container.
+```bash
+docker container run -d \
+  -p 8080:3000 \
+  --health-cmd "curl -f https://localhost:3000/health" \
+  --health-interval 10s \
+  --health-timeout 5s \
+  --health-start-period 30s \
+  --health-retries 3 \
+  pauloaragaodev/simulador-caos:v1
+```
+
+**Parâmetros:**
+- `--health-cmd`: Comando a executar (deve retornar 0 para sucesso)
+- `--health-interval`: Intervalo entre testes (padrão: 30s)
+- `--health-timeout`: Tempo máximo para o teste responder (padrão: 30s)
+- `--health-start-period`: Tempo de espera antes do primeiro teste (padrão: 0s)
+- `--health-retries`: Falhas consecutivas antes de marcar como unhealthy (padrão: 3)
+
+### Healthcheck no Docker Compose
+Configura healthcheck para um serviço no compose.yaml:
+
+```yaml
+services:
+  app:
+    image: pauloaragaodev/simulador-caos:v1
+    ports:
+      - "8080:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+```
+
+**Desabilitar healthcheck (se necessário):**
+```yaml
+healthcheck:
+  disable: true
+```
+
+### Healthcheck no Dockerfile
+Configura healthcheck diretamente na imagem Docker, aplicável a todos os containers criados desta imagem.
+
+```dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+COPY . .
+
+EXPOSE 3000
+
+# Instalar curl para o healthcheck
+RUN apk add --no-cache curl
+
+HEALTHCHECK --interval=10s \
+            --timeout=5s \
+            --start-period=30s \
+            --retries=3 \
+            CMD curl -f https://localhost:3000/health || exit 1
+
+CMD ["node", "server.js"]
+```
+
+**Alternativa com script customizado:**
+```dockerfile
+# Criar script de health
+RUN echo '#!/bin/sh\ncurl -f https://localhost:3000/health || exit 1' > /healthcheck.sh && \
+    chmod +x /healthcheck.sh
+
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 CMD /healthcheck.sh
+```
+
+### Estados do Healthcheck
+- **starting**: Container iniciando (dentro do `start_period`)
+- **healthy**: Container respondendo ao healthcheck corretamente
+- **unhealthy**: Container falhou no healthcheck
+
+### Verificar status
+```bash
+# Ver status atual
+docker inspect --format='{{.State.Health.Status}}' nome-container
+
+# Ver detalhes completos
+docker inspect nome-container | grep -A 10 Health
+```
+
+
+---
+
 ## 📋 Boas Práticas
 
 ✅ **Use volumes named** em produção em vez de bind mounts  
