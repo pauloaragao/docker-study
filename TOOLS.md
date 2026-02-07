@@ -208,9 +208,108 @@ Chainguard Base Image
 
 ---
 
+## 4. jq
+
+### Descrição
+jq é um processador de linha de comando leve e flexível para JSON. Similar a ferramentas como `sed`, `awk` e `grep` para dados estruturados em JSON, permite transformar, filtrar e manipular dados com grande facilidade.
+
+### Características Principais
+- **Processamento de JSON**: Slice, filter, map e transform dados JSON
+- **Linguagem elegante**: Sintaxe simples e poderosa para operações complexas
+- **Sem dependências**: Escrito em C portável, zero runtime dependencies
+- **Distribuição simples**: Binário único que funciona em qualquer máquina compatível
+- **Transformações concisas**: Código frequentemente mais curto e simples que o esperado
+
+### Funcionalidades
+- **Filtragem**: Selecione apenas os dados que precisa
+- **Mapeamento**: Transforme estruturas de dados
+- **Extração**: Acesse valores aninhados facilmente
+- **Operações matemáticas**: Cálculos e transformações numéricas
+- **Funções de data/hora**: Manipulação de timestamps e datas
+- **Expressões regulares**: Matching e substituição de padrões
+- **Try/Catch**: Tratamento de erros em expressões
+- **Destructuring**: Desestruturação de arrays e objetos
+- **Streaming Parser**: Processamento de grandes arquivos JSON
+- **Sistema de módulos**: Reutilização de código
+
+### Versões
+- **Versão atual**: 1.8.1 (Julho de 2025)
+- **Versão estável**: 1.8.0 (Junho de 2025)
+- **Versão anterior**: 1.7.1 com correções de segurança (Dezembro de 2023)
+
+### Instalação
+
+#### Download Binário
+Acesse a [página de download](https://jqlang.org/download/) para obter o binário para sua plataforma.
+
+#### Via Package Manager
+
+**Debian/Ubuntu:**
+```bash
+sudo apt-get install jq
+```
+
+**macOS (Homebrew):**
+```bash
+brew install jq
+```
+
+**Arch Linux:**
+```bash
+sudo pacman -S jq
+```
+
+**Alpine Linux:**
+```bash
+apk add jq
+```
+
+#### Com Go
+```bash
+go install github.com/jqlang/jq@latest
+```
+
+### Exemplos de Uso
+
+**Extractar campo específico:**
+```bash
+echo '{"name": "Paulo", "age": 30}' | jq '.name'
+```
+
+**Filtrar array:**
+```bash
+echo '[{"name": "Paulo", "age": 30}, {"name": "Maria", "age": 25}]' | jq '.[] | select(.age > 26)'
+```
+
+**Mapear valores:**
+```bash
+echo '[1, 2, 3]' | jq '.[] | . * 2'
+```
+
+**Transformar estrutura:**
+```bash
+echo '{"users": [{"name": "Paulo"}, {"name": "Maria"}]}' | jq '.users | map({user: .name})'
+```
+
+### Recursos e Comunidade
+- **Tutorial**: https://jqlang.org/tutorial/
+- **Manual Completo**: https://jqlang.org/manual/
+- **Playground Online**: https://play.jqlang.org/ (testar sem instalação)
+- **GitHub**: https://github.com/jqlang/jq
+- **Stack Overflow**: [tag jq](https://stackoverflow.com/questions/tagged/jq)
+- **Discord Server**: https://discord.gg/yg6yjNmgAC
+- **IRC**: #jq channel em Libera.Chat
+
+### Licença
+- **Código**: MIT License
+- **Documentação**: CC-BY-3.0
+
+---
+
 ## Recursos Adicionais
 
 - **Sigstore**: https://docs.sigstore.dev/
 - **Chainguard**: https://www.chainguard.dev/
 - **Trivy**: https://trivy.dev/
+- **jq**: https://jqlang.org/
 - **Supply Chain Security 101**: https://www.chainguard.dev/supply-chain-security-101
