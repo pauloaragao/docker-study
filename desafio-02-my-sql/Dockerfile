@@ -3,7 +3,7 @@ FROM mysql:8.0
 
 # Metadados do container
 LABEL maintainer="Dev Team" \
-      description="MySQL development environment for docker_db" \
+      description="MySQL" \
       version="1.0"
 
 # Variáveis de ambiente para configuração do MySQL

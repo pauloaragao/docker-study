@@ -3,7 +3,7 @@ FROM postgres:18.1
 
 # Metadados do container
 LABEL maintainer="Dev Team" \
-      description="PostgreSQL development environment for curso_docker" \
+      description="PostgreSQL" \
       version="1.0"
 
 # Variáveis de ambiente para configuração do PostgreSQL
