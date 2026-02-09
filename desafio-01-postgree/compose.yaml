@@ -1,31 +1,27 @@
-services:  
-  web:
-    extends:
-      file: kube-news.compose.yaml
-      service: kubenews
+version: '3.8'
 
+services:
   postgres:
-    image: postgres:${POSTGRES_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dev-postgres
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      DB_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-curso_docker}
+      POSTGRES_USER: ${POSTGRES_USER:-docker_usr}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-docker_pwd}
     volumes:
-      - kube_news_vol:/var/lib/postgresql/data
-    networks:
-      - kube_news_net
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-docker_usr} -d ${POSTGRES_DB:-curso_docker}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
-  kube_news_vol:
-    name: kube_news_vol
-    external: true
-
-networks:
-  kube_news_net:
-    driver: bridge
-    name: kube_news_net
-    external: true
+  postgres_data:
+    driver: local
   
